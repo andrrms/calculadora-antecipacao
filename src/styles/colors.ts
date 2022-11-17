@@ -7,6 +7,7 @@ type HEXRGBField = { rgb: RGBString; hex: HEXString };
 export interface MyTheme {
   pageBackground: HEXString;
   textOnBackground: HEXString;
+  lighterTextOnBackground: HEXString;
 
   card: {
     title: HEXString;
@@ -15,7 +16,10 @@ export interface MyTheme {
     sidePanel: RGBString;
   };
 
+  inputBorder: HEXString;
+
   primary: HEXRGBField;
+  lightPrimary: HEXString;
 }
 
 type AppTheme = {
@@ -80,6 +84,7 @@ const colors: AppTheme = {
   light: {
     pageBackground: PALLETE.gray[50].hex,
     textOnBackground: PALLETE.black.hex,
+    lighterTextOnBackground: PALLETE.gray[400].hex,
     card: {
       title: PALLETE.gray[400].hex,
       background: PALLETE.white.hex,
@@ -87,10 +92,13 @@ const colors: AppTheme = {
       sidePanel: PALLETE.gray[700].rgb,
     },
     primary: PALLETE.blue[400],
+    lightPrimary: PALLETE.blue[300].hex,
+    inputBorder: PALLETE.gray[200].hex,
   },
   dark: {
     pageBackground: PALLETE.gray[800].hex,
     textOnBackground: PALLETE.white.hex,
+    lighterTextOnBackground: PALLETE.gray[200].hex,
     card: {
       title: PALLETE.gray[200].hex,
       background: PALLETE.gray[700].hex,
@@ -98,6 +106,8 @@ const colors: AppTheme = {
       sidePanel: PALLETE.white.rgb,
     },
     primary: PALLETE.blue[300],
+    lightPrimary: PALLETE.blue[400].hex,
+    inputBorder: PALLETE.gray[400].hex,
   },
 };
 

@@ -7,7 +7,7 @@ export const SimulationCardContainer = styled.main`
 
   width: fit-content;
   max-width: 95vmin;
-  max-height: 95vmax;
+  margin-bottom: 5vh;
 
   display: grid;
   grid-template-columns: 1fr min(40%, 350px);
@@ -40,7 +40,10 @@ export const Content = styled.div`
 export const SidePanel = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 15px;
+
+  height: 100%;
 
   background-color: rgba(${({ theme }) => theme.card.sidePanel}, 0.05);
   border-left: 1px solid rgba(${({ theme }) => theme.card.sidePanel}, 0.075);
@@ -61,4 +64,45 @@ export const SidePanel = styled.div`
 
     padding-bottom: 8px;
   }
+
+  ol {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    margin-top: 20px;
+
+    li {
+      font-family: "Inter", sans-serif;
+
+      color: ${({ theme }) => theme.lightPrimary};
+
+      span {
+        font-weight: 700;
+
+        color: ${({ theme }) => theme.primary.hex};
+      }
+    }
+  }
+`;
+
+export const ToastErrorBody = styled.span`
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+`;
+
+export const ToastErrorBtn = styled.span`
+  background-color: transparent;
+  border: 2px solid #eee;
+  border-radius: 4px;
+  cursor: pointer;
+
+  width: fit-content;
+  height: fit-content;
+  padding: 3px;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 `;
