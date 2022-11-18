@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 interface IThemeButtonProps {
   primary?: boolean;
   extend?: boolean;
+  small?: boolean;
 }
 
 const ThemeButton = styled.button<IThemeButtonProps>`
@@ -52,6 +53,14 @@ const ThemeButton = styled.button<IThemeButtonProps>`
     extend &&
     css`
       width: 100%;
+    `}
+
+  ${({ small }) =>
+    small &&
+    css`
+      font-size: 1rem;
+      line-height: 1.2rem;
+      padding: 0.5rem;
     `}
 `;
 

@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
-import { FiSun, FiMoon } from "react-icons/fi";
+import React, { useState } from "react";
+import { FiSettings } from "react-icons/fi";
 
 import PriceInputField from "../PriceInputField";
 import ThemeButton from "../ThemeButton";
 
-import { ThemeContext } from "../../contexts/AppThemeContext";
 import { CalculatorFormContainer } from "./styles";
+import { useNavigate } from "react-router-dom";
 
 export type InputValues = {
   sellPrice: number;
@@ -22,7 +22,7 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
   handleFormSubmit,
   isLoading = false,
 }) => {
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  const navigate = useNavigate();
 
   const [sellPrice, setSellPrice] = useState(1000);
   const [installments, setInstallments] = useState(1);
@@ -78,8 +78,13 @@ const CalculatorForm: React.FC<CalculatorFormProps> = ({
         >
           Calcular
         </ThemeButton>
-        <ThemeButton onClick={toggleTheme} title="Trocar de tema" type="button">
-          {theme === "dark" ? <FiSun /> : <FiMoon />}
+        <ThemeButton
+          onClick={() => navigate("/settings")}
+          title="Configurações"
+          type="button"
+        >
+          {/* {theme === "dark" ? <FiSun /> : <FiMoon />} */}
+          <FiSettings />
         </ThemeButton>
       </div>
     </CalculatorFormContainer>

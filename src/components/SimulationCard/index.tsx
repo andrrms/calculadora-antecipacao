@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useContext } from "react";
 import { FiX } from "react-icons/fi";
 import { toast } from "react-hot-toast";
 
@@ -12,21 +12,48 @@ import {
   ToastErrorBody,
   ToastErrorBtn,
 } from "./styles";
+import {
+  DaysToSimulate,
+  SettingsContext,
+} from "../../contexts/SettingsContext";
 
 const SimulationCard: React.FC = () => {
   const resultListRef = useRef<any>();
   const [apiData, setApiData] = useState<any>();
   const [isLoading, setIsLoading] = useState(false);
+  const { daysToSimulate } = useContext(SettingsContext);
 
   async function handleSubmit({ sellPrice, installments, mdr }: InputValues) {
     setIsLoading(true);
 
     toast
       .promise(
-        api.post("/", { amount: sellPrice, installments, mdr }),
+        api.post("/", {
+          amount: sellPrice,
+          installments,
+          mdr,
+          days: Object.entries(daysToSimulate)
+            // eslint-disable-next-line array-callback-return
+            .map(([key, value]) => {
+              if (!value) return null;
+
+              switch (key as keyof DaysToSimulate) {
+                case "tomorrow":
+                  return 1;
+                case "fifteenDays":
+                  return 15;
+                case "thirthyDays":
+                  return 30;
+                case "ninetyDays":
+                  return 90;
+              }
+            })
+            .filter((v) => v),
+        }),
         {
           loading: "Carregando...",
           success: (res) => {
+            console.log(res.data);
             setApiData(res.data);
             resultListRef.current?.scrollIntoView({ behavior: "smooth" });
             return "Feito";
@@ -53,6 +80,13 @@ const SimulationCard: React.FC = () => {
       .finally(() => setIsLoading(false));
   }
 
+  function numberToMoneyString(num: number) {
+    return (num || 0).toLocaleString("pt-BR", {
+      currency: "BRL",
+      style: "currency",
+    });
+  }
+
   return (
     <SimulationCardContainer>
       <Content>
@@ -62,42 +96,30 @@ const SimulationCard: React.FC = () => {
       <SidePanel>
         <h2>Você receberá:</h2>
         <ol ref={resultListRef}>
-          <li>
-            Amanhã:{" "}
-            <span>
-              {(apiData ? apiData["1"] : 0).toLocaleString("pt-BR", {
-                currency: "BRL",
-                style: "currency",
-              })}
-            </span>
-          </li>
-          <li>
-            Em 15 dias:{" "}
-            <span>
-              {(apiData ? apiData["15"] : 0).toLocaleString("pt-BR", {
-                currency: "BRL",
-                style: "currency",
-              })}
-            </span>
-          </li>
-          <li>
-            Em 30 dias:{" "}
-            <span>
-              {(apiData ? apiData["30"] : 0).toLocaleString("pt-BR", {
-                currency: "BRL",
-                style: "currency",
-              })}
-            </span>
-          </li>
-          <li>
-            Em 90 dias:{" "}
-            <span>
-              {(apiData ? apiData["90"] : 0).toLocaleString("pt-BR", {
-                currency: "BRL",
-                style: "currency",
-              })}
-            </span>
-          </li>
+          {daysToSimulate.tomorrow && (
+            <li>
+              Amanhã:{" "}
+              <span>{numberToMoneyString(apiData && apiData["1"])}</span>
+            </li>
+          )}
+          {daysToSimulate.fifteenDays && (
+            <li>
+              Em 15 dias:{" "}
+              <span>{numberToMoneyString(apiData && apiData["15"])}</span>
+            </li>
+          )}
+          {daysToSimulate.thirthyDays && (
+            <li>
+              Em 30 dias:{" "}
+              <span>{numberToMoneyString(apiData && apiData["30"])}</span>
+            </li>
+          )}
+          {daysToSimulate.ninetyDays && (
+            <li>
+              Em 90 dias:{" "}
+              <span>{numberToMoneyString(apiData && apiData["90"])}</span>
+            </li>
+          )}
         </ol>
       </SidePanel>
     </SimulationCardContainer>
